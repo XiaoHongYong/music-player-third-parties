@@ -34,16 +34,16 @@
 #include "utilities.h"
 
 #include <stdarg.h>
-#include <stdio.h>
-#include <errno.h>
+#include <cstdio>
+#include <cerrno>
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>               // for close() and write()
 #endif
 #include <fcntl.h>                 // for open()
-#include <time.h>
+#include <ctime>
 #include "config.h"
-#include "glog/logging.h"          // To pick up flag settings etc.
-#include "glog/raw_logging.h"
+#include <glog/logging.h>          // To pick up flag settings etc.
+#include <glog/raw_logging.h>
 #include "base/commandlineflags.h"
 
 #ifdef HAVE_STACKTRACE
@@ -59,9 +59,7 @@
 # include <unistd.h>
 #endif
 
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-
-#if defined(HAVE_SYSCALL_H) || defined(HAVE_SYS_SYSCALL_H)
+#if (defined(HAVE_SYSCALL_H) || defined(HAVE_SYS_SYSCALL_H)) && (!(defined(GLOG_OS_MACOSX)))
 # define safe_write(fd, s, len)  syscall(SYS_write, fd, s, len)
 #else
   // Not so safe, but what can you do?
@@ -69,6 +67,16 @@
 #endif
 
 _START_GOOGLE_NAMESPACE_
+
+#if defined(__GNUC__)
+#define GLOG_ATTRIBUTE_FORMAT(archetype, stringIndex, firstToCheck) \
+  __attribute__((format(archetype, stringIndex, firstToCheck)))
+#define GLOG_ATTRIBUTE_FORMAT_ARG(stringIndex) \
+  __attribute__((format_arg(stringIndex)))
+#else
+#define GLOG_ATTRIBUTE_FORMAT(archetype, stringIndex, firstToCheck)
+#define GLOG_ATTRIBUTE_FORMAT_ARG(stringIndex)
+#endif
 
 // CAVEAT: vsnprintf called from *DoRawLog below has some (exotic) code paths
 // that invoke malloc() and getenv() that might acquire some locks.
@@ -78,23 +86,31 @@ _START_GOOGLE_NAMESPACE_
 // Helper for RawLog__ below.
 // *DoRawLog writes to *buf of *size and move them past the written portion.
 // It returns true iff there was no overflow or error.
-static bool DoRawLog(char** buf, int* size, const char* format, ...) {
+GLOG_ATTRIBUTE_FORMAT(printf, 3, 4)
+static bool DoRawLog(char** buf, size_t* size, const char* format, ...) {
   va_list ap;
   va_start(ap, format);
   int n = vsnprintf(*buf, *size, format, ap);
   va_end(ap);
-  if (n < 0 || n > *size) return false;
-  *size -= n;
+  if (n < 0 || static_cast<size_t>(n) > *size) return false;
+  *size -= static_cast<size_t>(n);
   *buf += n;
   return true;
 }
 
 // Helper for RawLog__ below.
-inline static bool VADoRawLog(char** buf, int* size,
+inline static bool VADoRawLog(char** buf, size_t* size,
                               const char* format, va_list ap) {
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+#endif
   int n = vsnprintf(*buf, *size, format, ap);
-  if (n < 0 || n > *size) return false;
-  *size -= n;
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
+  if (n < 0 || static_cast<size_t>(n) > *size) return false;
+  *size -= static_cast<size_t>(n);
   *buf += n;
   return true;
 }
@@ -104,16 +120,18 @@ static bool crashed = false;
 static CrashReason crash_reason;
 static char crash_buf[kLogBufSize + 1] = { 0 };  // Will end in '\0'
 
+GLOG_ATTRIBUTE_FORMAT(printf, 4, 5)
 void RawLog__(LogSeverity severity, const char* file, int line,
               const char* format, ...) {
-  if (!(FLAGS_logtostderr || severity >= FLAGS_stderrthreshold ||
-        FLAGS_alsologtostderr || !IsGoogleLoggingInitialized())) {
+  if (!(FLAGS_logtostdout || FLAGS_logtostderr ||
+        severity >= FLAGS_stderrthreshold || FLAGS_alsologtostderr ||
+        !IsGoogleLoggingInitialized())) {
     return;  // this stderr log message is suppressed
   }
   // can't call localtime_r here: it can allocate
   char buffer[kLogBufSize];
   char* buf = buffer;
-  int size = sizeof(buffer);
+  size_t size = sizeof(buffer);
 
   // NOTE: this format should match the specification in base/logging.h
   DoRawLog(&buf, &size, "%c00000000 00:00:00.000000 %5u %s:%d] RAW: ",
@@ -123,7 +141,7 @@ void RawLog__(LogSeverity severity, const char* file, int line,
 
   // Record the position and size of the buffer after the prefix
   const char* msg_start = buf;
-  const int msg_size = size;
+  const size_t msg_size = size;
 
   va_list ap;
   va_start(ap, format);

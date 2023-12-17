@@ -33,12 +33,12 @@
 
 #include "utilities.h"   // for OS_* macros
 
-#if !defined(OS_WINDOWS)
+#if !defined(GLOG_OS_WINDOWS)
 #include <unistd.h>
 #include <sys/mman.h>
 #endif
 
-#include <stdio.h>  // for NULL
+#include <cstdio>  // for NULL
 #include "stacktrace.h"
 
 _START_GOOGLE_NAMESPACE_
@@ -49,7 +49,7 @@ _START_GOOGLE_NAMESPACE_
 // "STRICT_UNWINDING") to reduce the chance that a bad pointer is returned.
 template<bool STRICT_UNWINDING>
 static void **NextStackFrame(void **old_sp) {
-  void **new_sp = (void **) *old_sp;
+  void **new_sp = static_cast<void **>(*old_sp);
 
   // Check that the transition from frame pointer old_sp to frame
   // pointer new_sp isn't clearly bogus
@@ -74,7 +74,7 @@ static void **NextStackFrame(void **old_sp) {
   // last two pages in the address space
   if ((uintptr_t)new_sp >= 0xffffe000) return NULL;
 #endif
-#if !defined(OS_WINDOWS)
+#if !defined(GLOG_OS_WINDOWS)
   if (!STRICT_UNWINDING) {
     // Lax sanity checks cause a crash in 32-bit tcmalloc/crash_reason_test
     // on AMD-based machines with VDSO-enabled kernels.
@@ -83,8 +83,9 @@ static void **NextStackFrame(void **old_sp) {
     //       is already on its last leg, so it's ok to be slow here.
     static int page_size = getpagesize();
     void *new_sp_aligned = (void *)((uintptr_t)new_sp & ~(page_size - 1));
-    if (msync(new_sp_aligned, page_size, MS_ASYNC) == -1)
+    if (msync(new_sp_aligned, page_size, MS_ASYNC) == -1) {
       return NULL;
+    }
   }
 #endif
   return new_sp;

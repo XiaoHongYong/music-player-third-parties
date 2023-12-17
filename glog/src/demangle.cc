@@ -34,18 +34,18 @@
 //
 // Note that we only have partial C++0x support yet.
 
-#include <stdio.h>  // for NULL
-#include "utilities.h"
-#include "demangle.h"
+#include <cstdio>  // for NULL
 
-#if defined(OS_WINDOWS)
+#include "demangle.h"
+#include "utilities.h"
+
+#if defined(GLOG_OS_WINDOWS)
 #include <dbghelp.h>
-#pragma comment(lib, "dbghelp")
 #endif
 
 _START_GOOGLE_NAMESPACE_
 
-#if !defined(OS_WINDOWS)
+#if !defined(GLOG_OS_WINDOWS)
 typedef struct {
   const char *abbrev;
   const char *real_name;
@@ -192,7 +192,7 @@ static bool StrPrefix(const char *str, const char *prefix) {
 }
 
 static void InitState(State *state, const char *mangled,
-                      char *out, int out_size) {
+                      char *out, size_t out_size) {
   state->mangled_cur = mangled;
   state->out_cur = out;
   state->out_begin = out;
@@ -404,7 +404,8 @@ static void MaybeCancelLastSeparator(State *state) {
 // "mangled_cur" is anonymous namespace.
 static bool IdentifierIsAnonymousNamespace(State *state, int length) {
   static const char anon_prefix[] = "_GLOBAL__N_";
-  return (length > (int)sizeof(anon_prefix) - 1 &&  // Should be longer.
+  return (length >
+              static_cast<int>(sizeof(anon_prefix)) - 1 &&  // Should be longer.
           StrPrefix(state->mangled_cur, anon_prefix));
 }
 
@@ -1323,8 +1324,9 @@ static bool ParseTopLevelMangledName(State *state) {
 #endif
 
 // The demangler entry point.
-bool Demangle(const char *mangled, char *out, int out_size) {
-#if defined(OS_WINDOWS)
+bool Demangle(const char *mangled, char *out, size_t out_size) {
+#if defined(GLOG_OS_WINDOWS)
+#if defined(HAVE_DBGHELP)
   // When built with incremental linking, the Windows debugger
   // library provides a more complicated `Symbol->Name` with the
   // Incremental Linking Table offset, which looks like
@@ -1339,13 +1341,19 @@ bool Demangle(const char *mangled, char *out, int out_size) {
   if (lparen) {
     // Extract the string `(?...)`
     const char *rparen = strchr(lparen, ')');
-    size_t length = rparen - lparen - 1;
+    size_t length = static_cast<size_t>(rparen - lparen) - 1;
     strncpy(buffer, lparen + 1, length);
     buffer[length] = '\0';
     mangled = buffer;
   } // Else the symbol wasn't inside a set of parentheses
   // We use the ANSI version to ensure the string type is always `char *`.
   return UnDecorateSymbolName(mangled, out, out_size, UNDNAME_COMPLETE);
+#else
+  (void)mangled;
+  (void)out;
+  (void)out_size;
+  return false;
+#endif
 #else
   State state;
   InitState(&state, mangled, out, out_size);

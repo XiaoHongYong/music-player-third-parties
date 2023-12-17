@@ -31,9 +31,6 @@
 /* Define to 1 if you have the `pthread' library (-lpthread). */
 #cmakedefine HAVE_LIBPTHREAD
 
-/* Define to 1 if you have the <libunwind.h> header file. */
-#cmakedefine HAVE_LIBUNWIND_H
-
 /* define if you have google gflags library */
 #cmakedefine HAVE_LIB_GFLAGS
 
@@ -42,6 +39,9 @@
 
 /* define if you have google gtest library */
 #cmakedefine HAVE_LIB_GTEST
+
+/* define if you have dbghelp library */
+#cmakedefine HAVE_DBGHELP
 
 /* define if you have libunwind */
 #cmakedefine HAVE_LIB_UNWIND
@@ -79,14 +79,8 @@
 /* Define to 1 if you have the <stdint.h> header file. */
 #cmakedefine HAVE_STDINT_H ${HAVE_STDINT_H}
 
-/* Define to 1 if you have the <stdlib.h> header file. */
-#cmakedefine HAVE_STDLIB_H
-
 /* Define to 1 if you have the <strings.h> header file. */
 #cmakedefine HAVE_STRINGS_H
-
-/* Define to 1 if you have the <string.h> header file. */
-#cmakedefine HAVE_STRING_H
 
 /* Define to 1 if you have the <syscall.h> header file. */
 #cmakedefine HAVE_SYSCALL_H
@@ -121,8 +115,11 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #cmakedefine HAVE_UNISTD_H ${HAVE_UNISTD_H}
 
-/* Define to 1 if you have the <unwind.h> header file. */
-#cmakedefine HAVE_UNWIND_H ${HAVE_UNWIND_H}
+/* Define if you have the <unwind.h> header file. */
+#cmakedefine HAVE_UNWIND_H
+
+/* Define if you linking to _Unwind_Backtrace is possible. */
+#cmakedefine HAVE__UNWIND_BACKTRACE
 
 /* define if the compiler supports using expression for operator */
 #cmakedefine HAVE_USING_OPERATOR
@@ -141,6 +138,9 @@
 
 /* define if localtime_r is available in time.h */
 #cmakedefine HAVE_LOCALTIME_R
+
+/* define if gmtime_r is available in time.h */
+#cmakedefine HAVE_GMTIME_R
 
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
@@ -195,6 +195,15 @@
 /* Check whether aligned_storage and alignof present */
 #cmakedefine HAVE_ALIGNED_STORAGE ${HAVE_ALIGNED_STORAGE}
 
+/* Check whether C++11 atomic is available */
+#cmakedefine HAVE_CXX11_ATOMIC ${HAVE_CXX11_ATOMIC}
+
+/* Check whether C++11 chrono is available */
+#cmakedefine HAVE_CXX11_CHRONO ${HAVE_CXX11_CHRONO}
+
+/* Check whether C++11 nullptr_t is available */
+#cmakedefine HAVE_CXX11_NULLPTR_T ${HAVE_CXX11_NULLPTR_T}
+
 /* Version number of package */
 #cmakedefine VERSION
 
@@ -215,5 +224,8 @@
 #cmakedefine _START_GOOGLE_NAMESPACE_ ${_START_GOOGLE_NAMESPACE_}
 
 #endif
+
+/* Replacement for deprecated syscall(SYS_gettid) on macOS. */
+#cmakedefine HAVE_PTHREAD_THREADID_NP ${HAVE_PTHREAD_THREADID_NP}
 
 #endif  // GLOG_CONFIG_H

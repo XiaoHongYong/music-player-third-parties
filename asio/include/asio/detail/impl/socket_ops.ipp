@@ -3854,7 +3854,7 @@ asio::error_code getnameinfo(const void* addr,
 #else
   clear_last_error();
   int error = ::getnameinfo(static_cast<const socket_addr_type*>(addr),
-      addrlen, host, hostlen, serv, (socklen_t)servlen, flags);
+      (socklen_t)addrlen, host, (socklen_t)hostlen, serv, (socklen_t)servlen, flags);
   return ec = translate_addrinfo_error(error);
 #endif
 }

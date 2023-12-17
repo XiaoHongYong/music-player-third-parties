@@ -936,7 +936,6 @@
 		C0A27C7B2AC3EF4900D248A4 /* crc32.h in Sources */ = {isa = PBXBuildFile; fileRef = 5F2BD54D149637CB003E7F5C /* crc32.h */; };
 		C0A27C7C2AC3EF4900D248A4 /* deflate.c in Sources */ = {isa = PBXBuildFile; fileRef = 5F2BD54E149637CB003E7F5C /* deflate.c */; };
 		C0A27C7D2AC3EF4900D248A4 /* deflate.h in Sources */ = {isa = PBXBuildFile; fileRef = 5F2BD54F149637CB003E7F5C /* deflate.h */; };
-		C0A27C7E2AC3EF4900D248A4 /* example.c in Sources */ = {isa = PBXBuildFile; fileRef = 5F2BD550149637CB003E7F5C /* example.c */; };
 		C0A27C7F2AC3EF4900D248A4 /* gzio.c in Sources */ = {isa = PBXBuildFile; fileRef = 5F2BD551149637CB003E7F5C /* gzio.c */; };
 		C0A27C802AC3EF4900D248A4 /* infback.c in Sources */ = {isa = PBXBuildFile; fileRef = 5F2BD552149637CB003E7F5C /* infback.c */; };
 		C0A27C812AC3EF4900D248A4 /* inffast.c in Sources */ = {isa = PBXBuildFile; fileRef = 5F2BD553149637CB003E7F5C /* inffast.c */; };
@@ -977,7 +976,6 @@
 		5F2BD54D149637CB003E7F5C /* crc32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = crc32.h; path = zlib/crc32.h; sourceTree = "<group>"; };
 		5F2BD54E149637CB003E7F5C /* deflate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = deflate.c; path = zlib/deflate.c; sourceTree = "<group>"; };
 		5F2BD54F149637CB003E7F5C /* deflate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = deflate.h; path = zlib/deflate.h; sourceTree = "<group>"; };
-		5F2BD550149637CB003E7F5C /* example.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = example.c; path = zlib/example.c; sourceTree = "<group>"; };
 		5F2BD551149637CB003E7F5C /* gzio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gzio.c; path = zlib/gzio.c; sourceTree = "<group>"; };
 		5F2BD552149637CB003E7F5C /* infback.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = infback.c; path = zlib/infback.c; sourceTree = "<group>"; };
 		5F2BD553149637CB003E7F5C /* inffast.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = inffast.c; path = zlib/inffast.c; sourceTree = "<group>"; };
@@ -1992,7 +1990,6 @@
 				5F2BD54D149637CB003E7F5C /* crc32.h */,
 				5F2BD54E149637CB003E7F5C /* deflate.c */,
 				5F2BD54F149637CB003E7F5C /* deflate.h */,
-				5F2BD550149637CB003E7F5C /* example.c */,
 				5F2BD551149637CB003E7F5C /* gzio.c */,
 				5F2BD552149637CB003E7F5C /* infback.c */,
 				5F2BD553149637CB003E7F5C /* inffast.c */,
@@ -4428,7 +4425,6 @@
 				C0A27C7B2AC3EF4900D248A4 /* crc32.h in Sources */,
 				C0A27C7C2AC3EF4900D248A4 /* deflate.c in Sources */,
 				C0A27C7D2AC3EF4900D248A4 /* deflate.h in Sources */,
-				C0A27C7E2AC3EF4900D248A4 /* example.c in Sources */,
 				C0A27C7F2AC3EF4900D248A4 /* gzio.c in Sources */,
 				C0A27C802AC3EF4900D248A4 /* infback.c in Sources */,
 				C0A27C812AC3EF4900D248A4 /* inffast.c in Sources */,
