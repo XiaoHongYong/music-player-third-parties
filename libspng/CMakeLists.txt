@@ -31,6 +31,9 @@ set(spng_TARGETS "")
 
 set(spng_SOURCES spng/spng.c)
 
+include_directories(${PROJECT_SOURCE_DIR}/../zlib)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/../zlib)
+
 if(SPNG_SHARED)
     add_library(spng SHARED ${spng_SOURCES})
     list(APPEND spng_TARGETS spng)
