@@ -11,7 +11,7 @@ libuv: 1.45.0
   * https://github.com/google/glog/releases
 * libpng-1.6.40
   * https://github.com/glennrp/libpng/tags
-* zlib-1.3
+* zlib-1.3.1
   * https://www.zlib.net/
 * libspng-0.7.4
   * https://libspng.org/
