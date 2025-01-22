@@ -210,6 +210,8 @@ if(BUILD_TESTING)
     add_subdirectory("test")
 endif()
 
+target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/ogg/include)
+
 # The following folder layout is mostly for MSVC
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
