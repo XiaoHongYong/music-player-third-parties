@@ -50,13 +50,13 @@ if(SPNG_STATIC)
     list(APPEND spng_TARGETS spng_static)
 endif()
 
-find_package(ZLIB REQUIRED)
+# find_package(ZLIB REQUIRED PATHS ${PROJECT_SOURCE_DIR}/../zlib)
 foreach(spng_TARGET ${spng_TARGETS})
     target_include_directories(${spng_TARGET} PUBLIC
       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/spng>
       $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     )
-    target_link_libraries(${spng_TARGET} PRIVATE ZLIB::ZLIB)
+    # target_link_libraries(${spng_TARGET} PRIVATE ZLIB::ZLIB)
     target_link_libraries(${spng_TARGET} PRIVATE ${MATH_LIBRARY})
 endforeach()
 
