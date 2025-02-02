@@ -463,6 +463,10 @@ if(LIBUV_BUILD_SHARED)
 endif()
 
 add_library(uv_a STATIC ${uv_sources})
+if(WIN32)
+  set_property(TARGET uv_a PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:${CMAKE_BUILD_TYPE}>:${CMAKE_BUILD_TYPE}>")
+endif(WIN32)
+
 target_compile_definitions(uv_a PRIVATE ${uv_defines})
 target_compile_options(uv_a PRIVATE ${uv_cflags})
 target_include_directories(uv_a

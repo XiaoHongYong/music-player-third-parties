@@ -6,6 +6,9 @@ add_library(grabbag STATIC
     replaygain.c
     seektable.c
     snprintf.c)
+if(WIN32)
+    set_property(TARGET grabbag PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:${CMAKE_BUILD_TYPE}>:${CMAKE_BUILD_TYPE}>")
+endif(WIN32)
 target_link_libraries(grabbag PUBLIC
     FLAC
     replaygain_analysis)

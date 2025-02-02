@@ -614,11 +614,16 @@ add_library (glogbase OBJECT
   ${_glog_BINARY_CMake_MODULES}
   ${GLOG_SRCS}
 )
+if(WIN32)
+  set_property(TARGET glogbase PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:${CMAKE_BUILD_TYPE}>:${CMAKE_BUILD_TYPE}>")
+endif(WIN32)
 
 add_library (glog
   $<TARGET_OBJECTS:glogbase>
 )
-
+if(WIN32)
+  set_property(TARGET glog PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:${CMAKE_BUILD_TYPE}>:${CMAKE_BUILD_TYPE}>")
+endif(WIN32)
 add_library (glog::glog ALIAS glog)
 
 set (glog_libraries_options_for_static_linking)

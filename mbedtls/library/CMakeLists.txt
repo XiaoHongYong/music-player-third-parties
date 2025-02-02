@@ -265,6 +265,9 @@ endif()
 
 if(USE_STATIC_MBEDTLS_LIBRARY)
     add_library(${mbedcrypto_static_target} STATIC ${src_crypto})
+    if(WIN32)
+        set_property(TARGET ${mbedcrypto_static_target} PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:${CMAKE_BUILD_TYPE}>:${CMAKE_BUILD_TYPE}>")
+    endif(WIN32)
     set_target_properties(${mbedcrypto_static_target} PROPERTIES OUTPUT_NAME mbedcrypto)
     target_link_libraries(${mbedcrypto_static_target} PUBLIC ${libs})
 
