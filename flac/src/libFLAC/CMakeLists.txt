@@ -72,7 +72,7 @@ add_library(FLAC
     $<$<BOOL:${OGG_FOUND}>:ogg_helper.c>
     $<$<BOOL:${OGG_FOUND}>:ogg_mapping.c>)
 if(WIN32)
-    set_property(TARGET FLAC PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:${CMAKE_BUILD_TYPE}>:${CMAKE_BUILD_TYPE}>")
+    set_property(TARGET FLAC PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif(WIN32)
 set_property(TARGET FLAC PROPERTY PROJECT_LABEL "libFLAC")
 if(TARGET FLAC-asm)

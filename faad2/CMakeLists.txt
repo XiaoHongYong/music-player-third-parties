@@ -144,7 +144,7 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/include/neaacdec.h
 foreach(LIB faad)
   add_library(${LIB} ${LIBFAAD_SOURCES})
   if(WIN32)
-    set_property(TARGET ${LIB} PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:${CMAKE_BUILD_TYPE}>:${CMAKE_BUILD_TYPE}>")
+    set_property(TARGET ${LIB} PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
   endif(WIN32)
   if(MATH_LIBRARY)
     target_link_libraries(${LIB} PUBLIC ${MATH_LIBRARY})

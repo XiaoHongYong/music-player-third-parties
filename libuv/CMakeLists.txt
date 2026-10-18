@@ -464,7 +464,7 @@ endif()
 
 add_library(uv_a STATIC ${uv_sources})
 if(WIN32)
-  set_property(TARGET uv_a PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:${CMAKE_BUILD_TYPE}>:${CMAKE_BUILD_TYPE}>")
+  set_property(TARGET uv_a PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif(WIN32)
 
 target_compile_definitions(uv_a PRIVATE ${uv_defines})

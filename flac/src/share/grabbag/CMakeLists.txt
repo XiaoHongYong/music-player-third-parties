@@ -7,7 +7,7 @@ add_library(grabbag STATIC
     seektable.c
     snprintf.c)
 if(WIN32)
-    set_property(TARGET grabbag PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:${CMAKE_BUILD_TYPE}>:${CMAKE_BUILD_TYPE}>")
+    set_property(TARGET grabbag PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif(WIN32)
 target_link_libraries(grabbag PUBLIC
     FLAC

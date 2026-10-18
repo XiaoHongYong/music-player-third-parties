@@ -1056,7 +1056,8 @@ int mp4read_open(char *name)
 
     mp4read_close();
 
-    g_fin = fopen(name, "rb");
+    /* Windows 上路径为 UTF-8，须用 faad_fopen（_wfopen），普通 fopen 打不开中文路径 */
+    g_fin = faad_fopen(name, "rb");
     if (!g_fin)
         return ERR_FAIL;
 
